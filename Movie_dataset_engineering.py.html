@@ -1,0 +1,490 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# ### Task One (Data Cleaning):
+# 
+# One of the most important roles of a data analyst is to clean and make sense of the data presented to them. So, as a data analyst let's suppose you are given the task of cleaning the following dataset of Famous Movie Reviews with Python path. Take us through your data cleaning process and share the final data that you think is ready for use.
+# 
+# Movie dataset:
+# https://docs.google.com/spreadsheets/d/1nUbyyp021YOclKGNqxdyxG_voAoRjsZtTVbx 0o6WJ-E/edit?usp=sharing
+
+# In[115]:
+
+
+#Importing libraries
+import numpy as np
+import pandas as pd
+
+
+# In[130]:
+
+
+#Reading the csv file from local drive:
+movie_1 = pd.read_csv('/Users/deepakmathew/Downloads/Pending projects/Queros/Movie_dataset.csv')
+movie_1.head()
+
+
+# In[131]:
+
+
+#Checking the number of rows and columns:
+movie_1.shape
+
+
+# In[132]:
+
+
+#Checking for null values:
+movie_1.isna().sum()
+
+
+# In[133]:
+
+
+#Info about the dataset:
+movie_1.info()
+
+
+# In[134]:
+
+
+#Reading the column names using for:
+for i in movie_1.columns:
+    print(i)
+
+
+# In[135]:
+
+
+#Checking the datatypes:
+movie_1.dtypes
+
+
+# In[136]:
+
+
+movie_1['movie_title']
+
+
+# In[137]:
+
+
+#Removing last 2 bias character from the dataset
+
+movie_1['movie_title'] = movie_1['movie_title'].str[:-2]
+
+
+# In[138]:
+
+
+movie_1.head()
+
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 14 entries, 0 to 13
+Data columns (total 16 columns):
+ #   Column                     Non-Null Count  Dtype  
+---  ------                     --------------  -----  
+ 0   movie_title                14 non-null     object 
+ 1   num_critic_for_reviews     14 non-null     int64  
+ 2   duration                   11 non-null     float64
+ 3   DIRECTOR_facebook_likes    12 non-null     object 
+ 4   actor_3_facebook_likes     14 non-null     int64  
+ 5   ACTOR_1_facebook_likes     14 non-null     int64  
+ 6   gross                      14 non-null     int64  
+ 7   num_voted_users            13 non-null     float64
+ 8   Cast_Total_facebook_likes  12 non-null     float64
+ 9   facenumber_in_poster       9 non-null      float64
+ 10  num_user_for_reviews       14 non-null     int64  
+ 11  budget                     14 non-null     int64  
+ 12  title_year                 14 non-null     int64  
+ 13  ACTOR_2_facebook_likes     13 non-null     float64
+ 14  imdb_score                 14 non-null     float64
+ 15  title_year.1               7 non-null      float64
+dtypes: float64(7), int64(7), object(2)
+memory usage: 1.9+ KB
+# In[139]:
+
+
+#Checking the number of unique values:
+
+movie_1['facenumber_in_poster'].unique()
+
+
+# In[140]:
+
+
+#Checking the null values
+
+movie_1.duration.isna().sum()
+
+
+# In[141]:
+
+
+#movie_1['title_year.1'].nunique()
+movie_1['title_year.1']
+
+
+# In[143]:
+
+
+#Dropping title_year.1 and ACTOR_2_facebook_likes as they do not seem relevant. Already title year is existing in 
+#dataset and actor 1 is important in most of the cases than actor 2
+movie_1.drop(['title_year.1','ACTOR_2_facebook_likes'], axis=1, inplace=True)
+movie_1
+
+
+# In[144]:
+
+
+#Checking the shape of dataset after the drop fucntion
+movie_1.shape
+
+
+# In[145]:
+
+
+#Checking the column names
+movie_1.columns
+
+
+# In[146]:
+
+
+#importing the plotting libraries
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+# In[148]:
+
+
+#Plotting the Distribution plot
+sns.distplot(movie_1['ACTOR_1_facebook_likes'])
+
+
+# In[151]:
+
+
+#Plotting the histogram
+plt.hist(movie_1['ACTOR_1_facebook_likes'], bins = 7)
+
+
+# In[152]:
+
+
+#Plotting boxplot
+sns.boxplot(movie_1['ACTOR_1_facebook_likes'])
+
+
+# In[153]:
+
+
+#Describe function for the statistical analysis
+#movie_1.describe(include='O')
+
+movie_1.describe()
+
+
+# In[154]:
+
+
+#Checking the correlation between columns
+movie_1.corr()
+
+
+# In[155]:
+
+
+#Plotting the correlation
+plt.figure(figsize=(10,10))
+sns.heatmap(movie_corr, square = True, annot = True)
+
+
+# In[158]:
+
+
+movie_1['DIRECTOR_facebook_likes'].unique()
+
+
+# In[164]:
+
+
+#replacong the string with the number
+
+movie_1 = movie_1.replace(['"475"'],'475')
+
+
+# In[167]:
+
+
+#Finding the unique values
+
+movie_1['DIRECTOR_facebook_likes'].unique()
+
+
+# In[173]:
+
+
+#checking the dtype of DIRECTOR_facebook_likes
+
+movie_1['DIRECTOR_facebook_likes'].dtype
+
+
+# In[176]:
+
+
+#Creating a duplicate column of DIRECTOR_facebook_likes
+
+dupl = movie_1['DIRECTOR_facebook_likes']
+
+
+# In[179]:
+
+
+dupl.isna().any()
+
+
+# In[180]:
+
+
+dupl = dupl.dropna()
+
+
+# In[183]:
+
+
+#Converting from obj datatype to obj from 'dupl dataset'
+print(dupl)
+
+
+# In[185]:
+
+
+dupl.columns = ['D_likes']
+print(dupl)
+
+
+# In[186]:
+
+
+#Converting the datatype to int
+dupl.astype(int)
+
+
+# In[188]:
+
+
+dupl.mode()
+
+
+# ## We had to do the above steps creating a new dataset named 'dupl' becasue it was impossible to convert the movie dataset column 'DIRECTOR_facebook_likes' to int as a null value was present. But when we tried to fill the null value with the mean or mode, it was not allowing because of the column being the 'obj' dtype.
+
+# In[190]:
+
+
+# Filling the null areas of the column DIRECTOR_facebook_likes with 10 which is the mode.
+#Mean didn't seem feasible due to big variance
+
+movie_1['DIRECTOR_facebook_likes'].replace([np.nan], 10, inplace=True)
+
+
+# In[191]:
+
+
+movie_1['DIRECTOR_facebook_likes']
+
+
+# In[202]:
+
+
+#Converting the datatype of DIRECTOR_facebook_likes to int from obj
+
+movie_1['DIRECTOR_facebook_likes'] = movie_1['DIRECTOR_facebook_likes'].astype(int)
+
+
+# In[203]:
+
+
+movie_1.isna().any()
+
+
+# In[205]:
+
+
+movie_1['duration'].unique()
+
+
+# In[206]:
+
+
+movie_1['duration'].fillna(movie_1['duration'].mean())
+
+
+# In[208]:
+
+
+plt.hist(movie_1['num_voted_users'], bins = 7)
+
+
+# In[209]:
+
+
+#Finding the correlation between 2 columns: dummy dataset 'corr1'
+
+corr1 = movie_1[['num_voted_users','num_user_for_reviews']].corr()
+plt.figure(figsize=(5,5))
+sns.heatmap(corr1, square=True, annot=True)
+
+
+# In[211]:
+
+
+#Dummy data 'test_2'
+test_2 = movie_1[['num_voted_users','num_user_for_reviews']]
+test_2
+
+
+# In[219]:
+
+
+#Seems that there is no much correlation between the mentioned columns. 
+#Therefore going to fill with the mean in the dataset
+
+movie_1['num_voted_users'] = movie_1['num_voted_users'].fillna(movie_1['num_voted_users'].mean())
+movie_1['num_voted_users'].round(decimals=0)
+movie_1['num_voted_users'].astype(int)
+
+
+# In[230]:
+
+
+movie_1.info()
+
+
+# In[221]:
+
+
+movie_1['duration'] = movie_1['duration'].fillna(movie_1['duration'].mean())
+#movie_1['duration'].round(decimals=0)
+movie_1['duration'].astype(int)
+
+
+# In[229]:
+
+
+#Filling the Cast_Total_facebook_likes with mean:
+
+movie_1['Cast_Total_facebook_likes'] = movie_1['Cast_Total_facebook_likes'].fillna(movie_1['Cast_Total_facebook_likes'].mean())
+movie_1['Cast_Total_facebook_likes'].astype(int)
+
+
+# In[235]:
+
+
+#Checking the correlation between imdb_score and facenumber_in_poster, dummy dataset 'corr2'
+
+corr2 = movie_1[['imdb_score','facenumber_in_poster']]
+corr2
+
+
+# ## My intention in the below step was to fil the null values based on a condition. I have found the rating of imdb has some connection with facenumber_in_poster. Hence tried to create an if else statement using 7<x<7.5 logic. However I am unable to run the same. Therefore I am filling the null data manually in the step next to next tab.
+
+# In[245]:
+
+
+#Trying to use if else staement to fill the null values, based on a condition:
+
+if (corr2['imdb_score'].values > 7.5):
+    corr2['facenumber_in_poster'].fillna(4)
+elif corr2['imdb_score'].values < 7.5 & corr2['imdb_score'].values > 7:
+    corr2['facenumber_in_poster'].fillna(3)
+else:
+    corr2['facenumber_in_poster'].fillna(2)
+
+
+# In[256]:
+
+
+print(corr2.iloc[0:1,1:2])
+print(corr2.iloc[1:2,1:2])
+print(corr2.iloc[3:4,1:2])
+print(corr2.iloc[5:6,1:2])
+print(corr2.iloc[10:11,1:2])
+
+
+# In[270]:
+
+
+#Manually filling the null areas on basis:
+#if x<7 then fill 2, if 7<x<7.5 then fill 3, else fill4
+corr2.iloc[0:1,0:2].fillna(4)
+corr2.iloc[1:2,0:2].fillna(3)
+corr2.iloc[3:4,0:2].fillna(4)
+corr2.iloc[5:6,0:2].fillna(2)
+corr2.iloc[10:11,0:2].fillna(2)
+
+
+# In[283]:
+
+
+#Applying the logic in 'movie_1'
+
+#movie_1.iloc[0:1, 9:10]
+
+movie_1.iloc[0:1,9:10] = movie_1.iloc[0:1,9:10].fillna(4)
+movie_1.iloc[1:2,9:10] = movie_1.iloc[1:2,9:10].fillna(3)
+movie_1.iloc[3:4,9:10] = movie_1.iloc[3:4,9:10].fillna(4)
+movie_1.iloc[5:6,9:10] = movie_1.iloc[5:6,9:10].fillna(2)
+movie_1.iloc[10:11,9:10] = movie_1.iloc[10:11,9:10].fillna(2)
+
+
+# In[284]:
+
+
+movie_1.info()
+
+
+# In[289]:
+
+
+#Making everything to integer:
+
+movie_1['duration'] = movie_1['duration'].astype(int)
+movie_1['num_voted_users'] = movie_1['num_voted_users'].astype(int)
+movie_1['Cast_Total_facebook_likes'] = movie_1['Cast_Total_facebook_likes'].astype(int)
+movie_1['facenumber_in_poster'] = movie_1['facenumber_in_poster'].astype(int)
+movie_1['imdb_score'] = movie_1['imdb_score'].astype(int)
+
+
+# In[290]:
+
+
+movie_1.info()
+
+
+# In[295]:
+
+
+movie_1
+
+
+# In[297]:
+
+
+movie_1.to_csv('final_movie_data.csv')
+
+Github link:
+
+https://github.com/MachineInsurgence87/Movie_rating
+# In[296]:
+
+
+#End of the project. Final dataset shown above.
+
+
+# In[ ]:
+
+
+
+

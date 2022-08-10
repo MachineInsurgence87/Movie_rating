@@ -7,7 +7,7 @@ One of the most important roles of a data analyst is to clean and make sense of 
 
 Movie dataset:
 
-https://docs.google.com/spreadsheets/d/1nUbyyp021YOclKGNqxdyxG_voAoRjsZtTVbx 0o6WJ-E/edit?usp=sharing
+https://docs.google.com/spreadsheets/d/1nUbyyp021YOclKGNqxdyxG_voAoRjsZtTVbx0o6WJ-E/edit?usp=sharing
 
 The dataset for the cleaning is already uploaded with the name 'Movie_dataset.csv' and the cleaned dataset is uploaded as 'final_movie_data.csv'.
 

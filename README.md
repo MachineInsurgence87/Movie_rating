@@ -9,6 +9,10 @@ Movie dataset to be cleaned:
 
 https://docs.google.com/spreadsheets/d/1nUbyyp021YOclKGNqxdyxG_voAoRjsZtTVbx0o6WJ-E/edit?usp=sharing
 
+Code in PDF:
+
+https://github.com/MachineInsurgence87/Movie_rating/blob/main/Movie_dataset_engineering.pdf
+
 The dataset for the cleaning is already uploaded with the name 'Movie_dataset.csv' and the cleaned dataset is uploaded as 'final_movie_data.csv'.
 
 Please mail me for more details and guidance:
